@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StockCareV2.Application/StockCareV2.Application.csproj" />
+    <Project Path="src/StockCareV2.Domain/StockCareV2.Domain.csproj" />
+    <Project Path="src/StockCareV2.Infrastructure/StockCareV2.Infrastructure.csproj" />
+    <Project Path="src/StockCareV2.Presentation/StockCareV2.Presentation/StockCareV2.Presentation.csproj" Id="34f5dcb5-584a-486b-ac9e-68fd953602e0" />
+  </Folder>
+</Solution>
