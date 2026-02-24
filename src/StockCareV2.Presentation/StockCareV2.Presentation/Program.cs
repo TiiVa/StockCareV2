@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using StockCareV2.Application;
+using StockCareV2.Infrastructure;
 
 namespace StockCareV2.Presentation
 {
@@ -19,6 +21,10 @@ namespace StockCareV2.Presentation
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("Local", options.ProviderOptions);
             });
+
+            //builder.Services.AddServices(builder.Configuration);
+
+            builder.Services.AddApplication();
 
             await builder.Build().RunAsync();
         }

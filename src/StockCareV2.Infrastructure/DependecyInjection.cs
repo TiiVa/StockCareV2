@@ -1,6 +1,16 @@
-﻿namespace StockCareV2.Infrastructure
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace StockCareV2.Infrastructure
 {
-    internal class DependecyInjection
+    public static class DependecyInjection
     {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+        {
+           
+
+            return services;
+        }
+
+
     }
 }
