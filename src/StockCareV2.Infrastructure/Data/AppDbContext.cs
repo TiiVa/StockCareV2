@@ -1,10 +1,17 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using StockCareV2.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace StockCareV2.Infrastructure.Data
 {
-    internal class AppDbContext
+    public class AppDbContext : DbContext
     {
+        public DbSet<ProductEntity> Products { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+
+        }
     }
 }
