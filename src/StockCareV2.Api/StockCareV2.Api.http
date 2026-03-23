@@ -1,0 +1,6 @@
+@StockCareV2.Api_HostAddress = http://localhost:5150
+
+GET {{StockCareV2.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
