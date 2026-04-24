@@ -4,7 +4,7 @@ namespace StockCareV2.Application.DTOs
 {
     public class ProductDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public Unit Unit { get; set; }
         public int PackageSize { get; set; }
