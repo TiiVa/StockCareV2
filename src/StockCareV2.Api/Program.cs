@@ -1,6 +1,10 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StockCareV2.Application.Interfaces.RepositoryInterfaces;
 using StockCareV2.Infrastructure.Data;
+using StockCareV2.Application;
+using StockCareV2.Infrastructure;
 
 namespace StockCareV2.Api
 {
@@ -10,6 +14,7 @@ namespace StockCareV2.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+           
 
             // Add services to the container.
 
@@ -18,9 +23,20 @@ namespace StockCareV2.Api
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+            builder.Services.AddApplication()
+                .AddInfrastructure(builder.Configuration);
+
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
+
+            app.MapGet("/products", async ([FromServices] IProductRepository repo) =>
+            {
+                var products = await repo.GetAllAsync();
+
+                return products;
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

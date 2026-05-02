@@ -12,30 +12,18 @@ namespace StockCareV2.Infrastructure.Repositories
     public class ProductRepository(AppDbContext context) : IProductRepository
     {
 
-        public async Task<IEnumerable<ProductDto>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
+        {
+            return await context.Products.ToListAsync();
+        }
+
+        public Task<Product> GetById(Guid id)
         {
             throw new NotImplementedException();
         }
-
-        public Task<ProductDto> GetById(Guid id)
+        public Task<bool> AddAsync(Product entity)
         {
             throw new NotImplementedException();
-        }
-
-        public async Task<bool> AddAsync(ProductDto entity)
-        {
-            var entityModel = await context.Products.FindAsync(entity.Id);
-
-            if(entityModel is null)
-            {
-                return false;
-
-            }
-
-            context.Products.Add(entityModel);
-
-            return true;
-
         }
 
         public Task<bool> DeleteAsync(Guid id)
@@ -43,9 +31,7 @@ namespace StockCareV2.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-       
-
-        public Task<bool> UpdateAsync(ProductDto entity, Guid id)
+        public Task<bool> UpdateAsync(Product entity, Guid id)
         {
             throw new NotImplementedException();
         }

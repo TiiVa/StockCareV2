@@ -6,7 +6,7 @@ using System.Text;
 
 namespace StockCareV2.Application.Interfaces.RepositoryInterfaces
 {
-    public interface IProductRepository : IRepository<ProductDto>
+    public interface IProductRepository : IRepository<Product>
     {
 
     }
