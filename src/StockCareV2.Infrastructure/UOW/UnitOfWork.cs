@@ -13,7 +13,7 @@ namespace StockCareV2.Infrastructure.UOW
     internal class UnitOfWork : IUnitOfWork
     {
 
-        private readonly AppDbContext? _dbContext;
+        private readonly AppDbContext _dbContext;
         public IProductRepository Products { get; private set; }
 
         public IProductRepository ProductRepository
@@ -29,14 +29,21 @@ namespace StockCareV2.Infrastructure.UOW
             }
         }
 
-        public Task CommitAsync()
+        public async Task CommitAsync()
         {
-            throw new NotImplementedException();
+            if(_dbContext is not null)
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if(_dbContext is not null)
+            {
+                _dbContext.Dispose();
+            }
         }
     }
 }

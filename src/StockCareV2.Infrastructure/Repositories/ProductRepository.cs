@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using StockCareV2.Application.DTOs;
@@ -17,23 +18,54 @@ namespace StockCareV2.Infrastructure.Repositories
             return await context.Products.ToListAsync();
         }
 
-        public Task<Product> GetById(Guid id)
+        public async Task<Product> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product is null) return new Product();
+
+            return product;
         }
-        public Task<bool> AddAsync(Product entity)
+        public async Task<bool> AddAsync(Product entity)
         {
-            throw new NotImplementedException();
+            var newProduct = await context.AddAsync(entity);
+
+            if (newProduct is null) return false;
+
+            await context.SaveChangesAsync(); // Flytta till UOW 
+
+            return true;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var productToDelete = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (productToDelete is null) return false;
+
+            context.Products.Remove(productToDelete);
+
+            return true;
         }
 
-        public Task<bool> UpdateAsync(Product entity, Guid id)
+        public async Task<bool> UpdateAsync(Product entity, Guid id)
         {
-            throw new NotImplementedException();
+            var productToUpdate = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (productToUpdate is null) return false;
+
+            productToUpdate.Unit = entity.Unit;
+            productToUpdate.Price = entity.Price;
+            productToUpdate.LastUpdated = entity.LastUpdated;
+            productToUpdate.Name = entity.Name;
+            productToUpdate.IsActive = entity.IsActive;
+            productToUpdate.MinStockLevel = entity.MinStockLevel;
+            productToUpdate.PackageSize = entity.PackageSize;
+
+            await context.SaveChangesAsync(); // Flytta till UOW
+
+            return true;
+
         }
     }
 }
