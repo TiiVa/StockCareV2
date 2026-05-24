@@ -28,11 +28,12 @@ namespace StockCareV2.Infrastructure.Repositories
         }
         public async Task<bool> AddAsync(Product entity)
         {
+            entity.LastUpdated = DateTime.UtcNow;
             var newProduct = await context.AddAsync(entity);
 
             if (newProduct is null) return false;
 
-            await context.SaveChangesAsync(); // Flytta till UOW 
+            await context.SaveChangesAsync(); // TODO: Move to UOW 
 
             return true;
         }
@@ -56,13 +57,13 @@ namespace StockCareV2.Infrastructure.Repositories
 
             productToUpdate.Unit = entity.Unit;
             productToUpdate.Price = entity.Price;
-            productToUpdate.LastUpdated = entity.LastUpdated;
+            productToUpdate.LastUpdated = DateTime.UtcNow;
             productToUpdate.Name = entity.Name;
             productToUpdate.IsActive = entity.IsActive;
             productToUpdate.MinStockLevel = entity.MinStockLevel;
             productToUpdate.PackageSize = entity.PackageSize;
 
-            await context.SaveChangesAsync(); // Flytta till UOW
+            await context.SaveChangesAsync(); // TODO: Move to UOW
 
             return true;
 

@@ -6,6 +6,7 @@ using StockCareV2.Infrastructure.Data;
 using StockCareV2.Application;
 using StockCareV2.Infrastructure;
 using StockCareV2.Application.DTOs;
+using StockCareV2.Application.DTOs.Converters;
 
 namespace StockCareV2.Api
 {
@@ -40,7 +41,10 @@ namespace StockCareV2.Api
             });
             app.MapPost($"/products", async ([FromServices] IProductRepository repo, ProductDto p) =>
             {
-                //await repo.AddAsync(p); // Add Converters
+                var productEntity = p.ConvertToProduct();
+
+                await repo.AddAsync(productEntity);
+
             });
 
             // Configure the HTTP request pipeline.

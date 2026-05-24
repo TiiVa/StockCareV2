@@ -14,6 +14,6 @@ namespace StockCareV2.Domain.Entities
         public bool IsActive { get; set; }
         public DateTime LastUpdated { get; set; }
         public ICollection<Order>? Orders { get; set; }
-        public ICollection<Stock>? Stocks { get; set; } // TODO: Ta bort denna?
+        public ICollection<Stock>? Stocks { get; set; } // TODO: Remove this?
     }
 }
