@@ -18,7 +18,7 @@ namespace StockCareV2.Infrastructure.Repositories
             return await context.Products.ToListAsync();
         }
 
-        public async Task<Product> GetById(Guid id)
+        public async Task<Product> GetByIdAsync(Guid id)
         {
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
 

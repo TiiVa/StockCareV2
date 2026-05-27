@@ -39,6 +39,12 @@ namespace StockCareV2.Api
 
                 return products;
             });
+            app.MapGet("/products/{id}", async ([FromServices] IProductRepository repo, Guid id) =>
+            {
+                var product = await repo.GetByIdAsync(id);
+
+                return product;
+            });
             app.MapPost($"/products", async ([FromServices] IProductRepository repo, ProductDto p) =>
             {
                 var productEntity = p.ConvertToProduct();
