@@ -52,6 +52,17 @@ namespace StockCareV2.Api
                 await repo.AddAsync(productEntity);
 
             });
+            app.MapPut("/products/{id}", async (IProductRepository repo, Guid id, ProductDto p) =>
+            {
+                var productEntity = p.ConvertToProduct();
+                
+                await repo.UpdateAsync(productEntity, id);
+
+            });
+            app.MapDelete("/products/{id}", async (IProductRepository repo, Guid id) => 
+            {
+                await repo.DeleteAsync(id);
+            });
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

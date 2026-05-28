@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StockCareV2.Application.DTOs;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
 using StockCareV2.Domain.Entities;
@@ -40,11 +41,15 @@ namespace StockCareV2.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(Guid id)
         {
-            var productToDelete = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var productToSoftDelete = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (productToDelete is null) return false;
+            if (productToSoftDelete is null) return false;
 
-            context.Products.Remove(productToDelete);
+            var entityEntry = context.Products.Update(productToSoftDelete);
+
+            entityEntry.Property(p => p.IsActive).CurrentValue = false;
+
+            await context.SaveChangesAsync();
 
             return true;
         }
@@ -62,6 +67,8 @@ namespace StockCareV2.Infrastructure.Repositories
             productToUpdate.IsActive = entity.IsActive;
             productToUpdate.MinStockLevel = entity.MinStockLevel;
             productToUpdate.PackageSize = entity.PackageSize;
+            productToUpdate.Quantity = entity.Quantity;
+
 
             await context.SaveChangesAsync(); // TODO: Move to UOW
 
