@@ -9,10 +9,14 @@ namespace StockCareV2.Application.Services
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _uow;
-        public ProductService(IUnitOfWork uow)
-        {
-            _uow = uow;
-        }
+        private readonly HttpClient _httpClient;
+
+
+        //public ProductService(IHttpClientFactory httpClientFactory, IUnitOfWork uow)
+        //{
+        //    _uow = uow;
+        //    _httpClient = httpClientFactory.CreateClient("OrderHandlerApi");
+        //}
 
 
     }

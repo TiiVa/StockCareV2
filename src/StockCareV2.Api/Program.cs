@@ -26,43 +26,43 @@ namespace StockCareV2.Api
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            builder.Services.AddApplication()
-                .AddInfrastructure(builder.Configuration);
+            //builder.Services.AddApplication()
+            //    .AddInfrastructure(builder.Configuration);
 
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
-            app.MapGet("/products", async ([FromServices] IProductRepository repo) =>
-            {
-                var products = await repo.GetAllAsync();
+            //app.MapGet("/products", async ([FromServices] IProductRepository repo) =>
+            //{
+            //    var products = await repo.GetAllAsync();
 
-                return products;
-            });
-            app.MapGet("/products/{id}", async ([FromServices] IProductRepository repo, Guid id) =>
-            {
-                var product = await repo.GetByIdAsync(id);
+            //    return products;
+            //});
+            //app.MapGet("/products/{id}", async ([FromServices] IProductRepository repo, Guid id) =>
+            //{
+            //    var product = await repo.GetByIdAsync(id);
 
-                return product;
-            });
-            app.MapPost($"/products", async ([FromServices] IProductRepository repo, ProductDto p) =>
-            {
-                var productEntity = p.ConvertToProduct();
+            //    return product;
+            //});
+            //app.MapPost($"/products", async ([FromServices] IProductRepository repo, ProductDto p) =>
+            //{
+            //    var productEntity = p.ConvertToProduct();
 
-                await repo.AddAsync(productEntity);
+            //    await repo.AddAsync(productEntity);
 
-            });
-            app.MapPut("/products/{id}", async (IProductRepository repo, Guid id, ProductDto p) =>
-            {
-                var productEntity = p.ConvertToProduct();
+            //});
+            //app.MapPut("/products/{id}", async (IProductRepository repo, Guid id, ProductDto p) =>
+            //{
+            //    var productEntity = p.ConvertToProduct();
                 
-                await repo.UpdateAsync(productEntity, id);
+            //    await repo.UpdateAsync(productEntity, id);
 
-            });
-            app.MapDelete("/products/{id}", async (IProductRepository repo, Guid id) => 
-            {
-                await repo.DeleteAsync(id);
-            });
+            //});
+            //app.MapDelete("/products/{id}", async (IProductRepository repo, Guid id) => 
+            //{
+            //    await repo.DeleteAsync(id);
+            //});
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

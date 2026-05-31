@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using StockCareV2.Application;
+
 
 namespace StockCareV2.Client
 {
@@ -12,6 +15,7 @@ namespace StockCareV2.Client
             builder.RootComponents.Add<HeadOutlet>("head::after");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddHttpClient("StockCareV2Api", o => o.BaseAddress = new Uri("http://localhost:5150"));
 
             await builder.Build().RunAsync();
         }

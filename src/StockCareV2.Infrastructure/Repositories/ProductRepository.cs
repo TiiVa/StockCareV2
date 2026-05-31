@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using StockCareV2.Application.DTOs;
+using StockCareV2.Application.DTOs.Converters;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
 using StockCareV2.Domain.Entities;
 using StockCareV2.Infrastructure.Data;
@@ -14,20 +15,23 @@ namespace StockCareV2.Infrastructure.Repositories
     public class ProductRepository(AppDbContext context) : IProductRepository
     {
 
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            return await context.Products.ToListAsync();
+            var products = context.Products.Select(p => p.ConvertToDto());
+
+            return products;
+
         }
 
-        public async Task<Product> GetByIdAsync(Guid id)
+        public async Task<ProductDto> GetByIdAsync(Guid id)
         {
             var product = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-            if (product is null) return new Product();
+            if (product is null) return new ProductDto();
 
-            return product;
+            return product.ConvertToDto();
         }
-        public async Task<bool> AddAsync(Product entity)
+        public async Task<bool> AddAsync(ProductDto entity)
         {
             entity.LastUpdated = DateTime.UtcNow;
             var newProduct = await context.AddAsync(entity);
@@ -54,7 +58,7 @@ namespace StockCareV2.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> UpdateAsync(Product entity, Guid id)
+        public async Task<bool> UpdateAsync(ProductDto entity, Guid id)
         {
             var productToUpdate = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
