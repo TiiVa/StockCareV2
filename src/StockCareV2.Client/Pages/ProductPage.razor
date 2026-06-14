@@ -1,11 +1,77 @@
 ﻿@page "/products" 
 @using StockCareV2.Application.DTOs
+@using StockCareV2.Application.Interfaces.ServiceInterfaces;
 
-<h3>ProductPage</h3>
+<PageTitle>Products</PageTitle>
+
+<div class="container mt-4">
+    <div class="row g-4">
+        <Virtualize Items="@ProductDtoList">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">@context.Name</h5>
+
+                        @if (context.IsActive)
+                        {
+                            <span class="badge bg-success">In Stock</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Out of Stock</span>
+                        }
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mb-2">
+                            <strong>Quantity:</strong>
+                            @context.Quantity @context.Unit
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Package Size:</strong>
+                            @context.PackageSize
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Minimum Stock:</strong>
+                            @context.MinStockLevel
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Price:</strong>
+                            @context.Price.ToString("C")
+                        </div>
+
+                        <div class="mb-2">
+                            <strong>Last Updated:</strong>
+                            @context.LastUpdated.ToString("yyyy-MM-dd HH:mm")
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-muted small">
+                        Product ID: @context.Id
+                    </div>
+                </div>
+            </div>
+        </Virtualize>
+    </div>
+</div>
+
 
 @code {
 
+    [Inject] private IProductService ProductService { get; set; }
+
     public ProductDto Product { get; set; }
-    
+    private List<ProductDto> ProductDtoList { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var products = await ProductService.GetAllAsync();
+
+        ProductDtoList.AddRange(products);
+    }
+
 
 }

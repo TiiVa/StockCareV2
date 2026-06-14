@@ -10,40 +10,24 @@ using System.Text;
 
 namespace StockCareV2.Infrastructure.UOW
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
-
         private readonly AppDbContext _dbContext;
-        public IProductRepository Products { get; private set; }
 
-        public IProductRepository ProductRepository
+        public UnitOfWork(
+            AppDbContext dbContext,
+            IProductRepository productRepository)
         {
-            get
-            {
-                if (Products == null)
-                {
-                    Products = new ProductRepository(_dbContext);
-                }
-
-                return Products;
-            }
+            _dbContext = dbContext;
+            ProductRepository = productRepository;
         }
 
-        public async Task CommitAsync()
-        {
-            if(_dbContext is not null)
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            
-        }
+        public IProductRepository ProductRepository { get; }
+
+        public Task CommitAsync()
+            => _dbContext.SaveChangesAsync();
 
         public void Dispose()
-        {
-            if(_dbContext is not null)
-            {
-                _dbContext.Dispose();
-            }
-        }
+            => _dbContext.Dispose();
     }
 }

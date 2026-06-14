@@ -7,6 +7,9 @@ using StockCareV2.Application;
 using StockCareV2.Infrastructure;
 using StockCareV2.Application.DTOs;
 using StockCareV2.Application.DTOs.Converters;
+using FastEndpoints;
+using StockCareV2.Application.Interfaces;
+using StockCareV2.Infrastructure.UOW;
 
 namespace StockCareV2.Api
 {
@@ -16,18 +19,32 @@ namespace StockCareV2.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
-           
+            //builder.Services.AddAuthorization();
 
             // Add services to the container.
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddControllers();
+            //builder.Services.AddControllers();
+            builder.Services.AddFastEndpoints();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
-            //builder.Services.AddApplication()
-            //    .AddInfrastructure(builder.Configuration);
+            builder.Services.AddApplication()
+               .AddInfrastructure(builder.Configuration);
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("BlazorClient", policy =>
+                {
+                    policy
+                        .WithOrigins("https://localhost:7173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
             builder.Services.AddOpenApi();
 
@@ -72,10 +89,13 @@ namespace StockCareV2.Api
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseCors("BlazorClient");
 
+            //app.UseAuthorization();
 
-            app.MapControllers();
+            app.UseFastEndpoints();
+
+            //app.MapControllers();
 
             app.Run();
         }

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using StockCareV2.Application.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace StockCareV2.Application.Interfaces.ServiceInterfaces
 {
-    public class IProductService
+    public interface IProductService : IService<ProductDto, Guid>
     {
+       
     }
 }

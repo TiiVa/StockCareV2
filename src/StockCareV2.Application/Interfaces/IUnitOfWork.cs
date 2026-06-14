@@ -10,5 +10,7 @@ namespace StockCareV2.Application.Interfaces
         IProductRepository ProductRepository { get; }
 
         Task CommitAsync();
+
+        
     }
 }

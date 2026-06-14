@@ -18,7 +18,8 @@ namespace StockCareV2.Application.DTOs.Converters
                 PackageSize = product.PackageSize,
                 Quantity = product.Quantity,
                 MinStockLevel = product.MinStockLevel,
-                LastUpdated = product.LastUpdated
+                LastUpdated = product.LastUpdated,
+                IsActive = product.IsActive
 
             };
 

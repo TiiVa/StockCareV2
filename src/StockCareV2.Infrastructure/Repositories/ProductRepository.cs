@@ -17,10 +17,9 @@ namespace StockCareV2.Infrastructure.Repositories
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = context.Products.Select(p => p.ConvertToDto());
-
-            return products;
-
+            return await context.Products
+                .Select(p => p.ConvertToDto())
+                .ToListAsync();
         }
 
         public async Task<ProductDto> GetByIdAsync(Guid id)

@@ -13,6 +13,6 @@ namespace StockCareV2.Application.DTOs
         public int MinStockLevel { get; set; }
         public bool IsActive { get; set; }
         public DateTime LastUpdated { get; set; }
-        public List<OrderDto>? OrderDtos{ get; set; }   
+        //public List<OrderDto>? OrderDtos { get; set; }   
     }
 }
