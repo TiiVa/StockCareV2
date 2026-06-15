@@ -9,7 +9,7 @@ namespace StockCareV2.Application.DTOs
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public User? User { get; set; }
+        public UserDto? User { get; set; }  
 
         // TODO: Add OrderProductDto list
     }
