@@ -1,24 +1,51 @@
-﻿using StockCareV2.Application.DTOs;
+﻿using Microsoft.EntityFrameworkCore;
+using StockCareV2.Application.DTOs;
+using StockCareV2.Application.DTOs.Converters;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
+using StockCareV2.Domain.Entities;
 using StockCareV2.Infrastructure.Data;
 
 namespace StockCareV2.Infrastructure.Repositories
 {
     public class UserRepository(AppDbContext context) : IUserRepository
     {
-        public Task<bool> AddAsync(UserDto entity)
+        public async Task<bool> AddAsync(UserDto entity)
         {
-            throw new NotImplementedException();
+
+            var newUser = new User
+            {
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                Email = entity.Email,
+                UserName = entity.UserName
+
+            };
+
+            await context.Users.AddAsync(newUser);
+
+            return true;
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var userToSoftDelete = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userToSoftDelete is null) return false;
+
+            var entityEntry = context.Users.Update(userToSoftDelete);
+
+            // TODO: sofdelete
+
+            return true;
+
         }
 
-        public Task<IEnumerable<UserDto>> GetAllAsync()
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
+
+            return await context.Users
+                .Select(u => u.ConvertToDto())
+                .ToListAsync();
         }
 
         public Task<UserDto> GetByIdAsync(Guid id)

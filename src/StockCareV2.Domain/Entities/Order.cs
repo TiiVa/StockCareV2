@@ -10,6 +10,8 @@ namespace StockCareV2.Domain.Entities
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public User? User { get; set; }
+
+        public bool IsActive { get; set; }
         public ICollection<OrderProduct> Products { get; set; } = [];
 
 

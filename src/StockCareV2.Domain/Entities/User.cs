@@ -11,6 +11,7 @@ namespace StockCareV2.Domain.Entities
         public string? LastName { get; set; }
         public string UserName { get; set; } = null!;
         public string? Email { get; set; }
+        public bool IsActive { get; set; }
         public ICollection<Order>? Orders { get; set; } 
     }
 }
