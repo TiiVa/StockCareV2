@@ -11,5 +11,6 @@ namespace StockCareV2.Application.DTOs
         public string SupplierName { get; set; } = null!;
         public List<OrderProductDto>? ProductsOnStock { get; set; }
         public List<OrderDto>? Orders { get; set; }
+        public bool IsActive { get; set; }
     }
 }

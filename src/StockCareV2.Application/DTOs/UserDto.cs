@@ -9,6 +9,7 @@ namespace StockCareV2.Application.DTOs
         public string? LastName { get; set; }
         public string UserName { get; set; } = null!;
         public string? Email { get; set; }
+        public bool IsActive { get; set; }
         public List<OrderDto>? Orders { get; set; }
     }
 }

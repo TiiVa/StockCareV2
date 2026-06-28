@@ -34,7 +34,7 @@ namespace StockCareV2.Infrastructure.Repositories
 
             var entityEntry = context.Users.Update(userToSoftDelete);
 
-            // TODO: sofdelete
+            entityEntry.Property(u => u.IsActive).CurrentValue = false;
 
             return true;
 
@@ -48,14 +48,33 @@ namespace StockCareV2.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public Task<UserDto> GetByIdAsync(Guid id)
+        public async Task<UserDto> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await context.Users.FindAsync(id);
+
+            if(user is null)
+            {
+                return new UserDto();
+            }
+
+            return user.ConvertToDto();
         }
 
-        public Task<bool> UpdateAsync(UserDto entity, Guid id)
+        public async Task<bool> UpdateAsync(UserDto entity, Guid id)
         {
-            throw new NotImplementedException();
+            var userToUpdate = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userToUpdate is null) return false;
+
+            userToUpdate.FirstName = entity.FirstName;
+            userToUpdate.LastName = entity.LastName;
+            userToUpdate.UserName = entity.UserName;
+            userToUpdate.IsActive = entity.IsActive;
+            userToUpdate.Email = entity.Email;
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
     }
 }

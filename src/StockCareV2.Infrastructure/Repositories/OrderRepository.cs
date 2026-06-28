@@ -1,17 +1,19 @@
 ﻿using StockCareV2.Application.DTOs;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
 using StockCareV2.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace StockCareV2.Infrastructure.Repositories
 {
     internal class OrderRepository(AppDbContext context) : IOrderRepository
     {
-        public Task<bool> AddAsync(OrderDto entity)
+        public async Task<bool> AddAsync(OrderDto entity)
         {
-            throw new NotImplementedException();
+
+            //await context.Orders.AddAsync(entity)
+
+            return true; 
+
+            
         }
 
         public Task<bool> DeleteAsync(Guid id)
