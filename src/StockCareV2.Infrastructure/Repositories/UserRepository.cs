@@ -9,6 +9,25 @@ namespace StockCareV2.Infrastructure.Repositories
 {
     public class UserRepository(AppDbContext context) : IUserRepository
     {
+        public async Task<IEnumerable<UserDto>> GetAllAsync()
+        {
+
+            return await context.Users
+                .Select(u => u.ConvertToDto())
+                .ToListAsync();
+        }
+
+        public async Task<UserDto> GetByIdAsync(Guid id)
+        {
+            var user = await context.Users.FindAsync(id);
+
+            if (user is null)
+            {
+                return new UserDto();
+            }
+
+            return user.ConvertToDto();
+        }
         public async Task<bool> AddAsync(UserDto entity)
         {
 
@@ -26,39 +45,7 @@ namespace StockCareV2.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            var userToSoftDelete = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (userToSoftDelete is null) return false;
-
-            var entityEntry = context.Users.Update(userToSoftDelete);
-
-            entityEntry.Property(u => u.IsActive).CurrentValue = false;
-
-            return true;
-
-        }
-
-        public async Task<IEnumerable<UserDto>> GetAllAsync()
-        {
-
-            return await context.Users
-                .Select(u => u.ConvertToDto())
-                .ToListAsync();
-        }
-
-        public async Task<UserDto> GetByIdAsync(Guid id)
-        {
-            var user = await context.Users.FindAsync(id);
-
-            if(user is null)
-            {
-                return new UserDto();
-            }
-
-            return user.ConvertToDto();
-        }
+             
 
         public async Task<bool> UpdateAsync(UserDto entity, Guid id)
         {
@@ -75,6 +62,19 @@ namespace StockCareV2.Infrastructure.Repositories
             await context.SaveChangesAsync();
 
             return true;
+        }
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var userToSoftDelete = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userToSoftDelete is null) return false;
+
+            var entityEntry = context.Users.Update(userToSoftDelete);
+
+            entityEntry.Property(u => u.IsActive).CurrentValue = false;
+
+            return true;
+
         }
     }
 }

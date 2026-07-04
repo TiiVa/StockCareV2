@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
 using StockCareV2.Application.DTOs;
 using StockCareV2.Application.DTOs.Converters;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
-using StockCareV2.Domain.Entities;
 using StockCareV2.Infrastructure.Data;
 
 namespace StockCareV2.Infrastructure.Repositories
@@ -33,7 +27,8 @@ namespace StockCareV2.Infrastructure.Repositories
         public async Task<bool> AddAsync(ProductDto entity)
         {
             entity.LastUpdated = DateTime.UtcNow;
-            var newProduct = await context.AddAsync(entity);
+            var productModel = entity.ConvertToProduct();
+            var newProduct = await context.Products.AddAsync(productModel);
 
             if (newProduct is null) return false;
 
@@ -42,21 +37,7 @@ namespace StockCareV2.Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            var productToSoftDelete = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
-
-            if (productToSoftDelete is null) return false;
-
-            var entityEntry = context.Products.Update(productToSoftDelete);
-
-            entityEntry.Property(p => p.IsActive).CurrentValue = false;
-
-            await context.SaveChangesAsync();
-
-            return true;
-        }
-
+       
         public async Task<bool> UpdateAsync(ProductDto entity, Guid id)
         {
             var productToUpdate = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
@@ -77,6 +58,21 @@ namespace StockCareV2.Infrastructure.Repositories
 
             return true;
 
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var productToSoftDelete = await context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (productToSoftDelete is null) return false;
+
+            var entityEntry = context.Products.Update(productToSoftDelete);
+
+            entityEntry.Property(p => p.IsActive).CurrentValue = false;
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
     }
 }
