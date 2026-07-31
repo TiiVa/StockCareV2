@@ -27,7 +27,8 @@ namespace StockCareV2.Api
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             //builder.Services.AddControllers();
-            builder.Services.AddFastEndpoints();
+            builder.Services
+                .AddFastEndpoints(); 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
             builder.Services.AddApplication()
@@ -46,7 +47,7 @@ namespace StockCareV2.Api
                 });
             });
 
-            builder.Services.AddOpenApi();
+            //builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
@@ -82,10 +83,11 @@ namespace StockCareV2.Api
             //});
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+
+            //if (app.Environment.IsDevelopment())
+            //{
+            //    app.MapOpenApi();
+            //}
 
             app.UseHttpsRedirection();
 
@@ -94,6 +96,7 @@ namespace StockCareV2.Api
             //app.UseAuthorization();
 
             app.UseFastEndpoints();
+            
 
             //app.MapControllers();
 
