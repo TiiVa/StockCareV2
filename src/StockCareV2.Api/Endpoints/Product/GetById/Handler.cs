@@ -8,7 +8,7 @@ namespace StockCareV2.Api.Endpoints.Product.GetProduct
     {
         public override void Configure()
         {
-            Get("products/{id}");
+            Get("products/{ProductId}");
             AllowAnonymous();
         }
 
