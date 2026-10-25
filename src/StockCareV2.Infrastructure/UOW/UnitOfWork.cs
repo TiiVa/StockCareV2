@@ -16,13 +16,22 @@ namespace StockCareV2.Infrastructure.UOW
 
         public UnitOfWork(
             AppDbContext dbContext,
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IOrderRepository orderRepository,
+            IUserRepository userrepository,
+            IStockRepository stockrepository)
         {
             _dbContext = dbContext;
             ProductRepository = productRepository;
+            OrderRepository = orderRepository;
+            UserRepository = userrepository;
+            StockRepository = stockrepository;
         }
 
         public IProductRepository ProductRepository { get; }
+        public IOrderRepository OrderRepository { get; set; }
+        public IUserRepository UserRepository { get; set; }
+        public IStockRepository StockRepository { get; set; }
 
         public Task CommitAsync()
             => _dbContext.SaveChangesAsync();

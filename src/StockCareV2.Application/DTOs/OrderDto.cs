@@ -11,7 +11,6 @@ namespace StockCareV2.Application.DTOs
         public Guid UserId { get; set; }
         public UserDto? User { get; set; }
         public bool IsActive { get; set; }
-
-        // TODO: Add OrderProductDto list
+        public List<Guid>? OrderProductDtoList { get; set; } 
     }
 }

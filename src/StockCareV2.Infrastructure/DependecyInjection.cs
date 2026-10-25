@@ -13,6 +13,9 @@ namespace StockCareV2.Infrastructure
         {
            
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
 
             return services;
         }

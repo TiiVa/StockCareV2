@@ -1,11 +1,12 @@
 ﻿using FastEndpoints;
 using Microsoft.AspNetCore.Http.HttpResults;
 using StockCareV2.Application.DTOs;
+using StockCareV2.Application.Interfaces;
 using StockCareV2.Application.Interfaces.RepositoryInterfaces;
 
 namespace StockCareV2.Api.Endpoints.Product.Add
 {
-    public class Handler(IProductRepository repo) : Endpoint<Request, Results<Ok, BadRequest>>
+    public class Handler(IUnitOfWork uow) : Endpoint<Request, Results<Ok, BadRequest>>
     {
         public override void Configure()
         {
@@ -15,7 +16,7 @@ namespace StockCareV2.Api.Endpoints.Product.Add
 
         public override async Task<Results<Ok, BadRequest>> HandleAsync(Request req, CancellationToken ct)
         {
-            var products = await repo.GetAllAsync();
+            var products = await uow.ProductRepository.GetAllAsync();
 
             if (products.Any(p => p.Name == req.Name))
             {
@@ -35,7 +36,7 @@ namespace StockCareV2.Api.Endpoints.Product.Add
 
             };
 
-            await repo.AddAsync(newProduct);
+            await uow.ProductRepository.AddAsync(newProduct);
 
             return TypedResults.Ok();
         }
